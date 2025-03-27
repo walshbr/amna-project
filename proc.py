@@ -1,9 +1,12 @@
+# bring in what we need
 import hazm
-
 import os
 
+
+# gets the filenames
 def all_files(folder_name):
     """given a directory, return the filenames in it"""
+    # this makes an empty collection of texts
     texts = []
     for (root, _, files) in os.walk(folder_name):
         for fn in files:
@@ -11,9 +14,9 @@ def all_files(folder_name):
             texts.append(path)
     return texts
 
+# reads in our texts
 corpus_dir = 'corpus'
 files = all_files(corpus_dir)
-
 texts = []
 for file in files:
     with open(file, 'r') as fin:
@@ -23,11 +26,12 @@ print(texts)
 
 test = texts[0]
 
+# lowercases and normalizes
 normalizer = hazm.Normalizer()
 normalized_test = normalizer.normalize(test)
 
+# divides into sentences and then words
 sents = hazm.sent_tokenize(normalized_test)
-
 tokens = [hazm.word_tokenize(sent) for sent in sents]
 
 # flat_tokens
@@ -41,8 +45,7 @@ stems = [stemmer.stem(token) for token in tokens]
 
 print(stems)
 
-# to set up -
-# pip install  
+# to set up / run in the future. 
 # assuming that you have pipenv set up
 # pipenv --python 3.11
 # pipenv shell
