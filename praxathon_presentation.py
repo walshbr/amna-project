@@ -1,3 +1,12 @@
+# Brandon - the general pipeline for this kind of stuff
+# Amna (maybe?) - go through the pieces we have including Preprocessing 
+# Brandon - talk about Text()
+# Amna - 3 or 4 specific functions from the Text() at the bottom
+# Brandon and Shane - scaling up?
+# Staff - get it set up on everyone's computer; including a github repo for the group
+# set up some homework for each other - assigning specific text analysis tasks
+# play for the remaining time?
+
 import nltk
 
 ### get the text in
@@ -27,3 +36,6 @@ print(nltk.text.Text(raw_tokens))
 ### show off the kinds of things you can do
 
 ### talk through how we might approach some of the questions and what problems it raises
+
+# pos_tags = nltk.pos_tag(raw_tokens)
+# named_entities = nltk.ne_chunk(pos_tags)
