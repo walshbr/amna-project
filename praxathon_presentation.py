@@ -1,24 +1,26 @@
+import nltk
+
 ### get the text in
 
-text_name = 'corpus/amnas_file_path.txt'
+text_name = 'yj_may22.txt'
 
 ### parse the text
 with open(text_name, 'r') as file_in:
     raw_text = file_in.read()
     
-### from the one big file break it into poems
+### from the one big file break it into pieces if necessary.
 
 
 ### clean and sanitize it
 
 raw_tokens = nltk.word_tokenize(raw_text)
 lower_tokens = [word.lower() for word in raw_tokens]
-stopwords = nltk.corpus.stopwords('english')
+stopwords = nltk.corpus.stopwords.words('english')
 stop_removed_tokens = [word for word in lower_tokens if word not in stopwords]
 
 ### process it
 
-nltk.text.Text(raw_tokens)
+print(nltk.text.Text(raw_tokens))
 
 ### analyze it
 
