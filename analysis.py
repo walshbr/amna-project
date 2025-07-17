@@ -1,0 +1,59 @@
+import nltk
+import os
+
+class Corpus(object):
+    def __init__(self, corpus_folder):
+        self.corpus_dir = corpus_folder
+        self.filenames = self.all_files()
+        self.poems = [Poem(fn) for fn in self.filenames]
+
+    def all_files(self):
+        """given a directory, return the filenames in it"""
+        texts = []
+        for (root, _, files) in os.walk(self.corpus_dir):
+            for fn in files:
+                if fn[0] == '.': # ignore dot files
+                    pass
+                else:
+                    path = os.path.join(root, fn)
+                    texts.append(path)
+        return texts
+
+class Poem(object):
+    def __init__(self, fn):
+        self.filename = fn
+        self.raw_text = self.get_text()
+        self.raw_tokens = nltk.word_tokenize(self.raw_text)
+        # TODO: not lowercasing, so do we need this?
+        self.lower_tokens = [word.lower() for word in self.raw_tokens]
+        # TODO: find better stopwords list
+        with open('ur_stopwords.txt', 'r') as fin:
+            self.stopwords = [line.strip() for line in fin.readlines()]
+            # TODO: remove diacritical markings
+        additions = ['آؤ'] 
+        self.stopwords.extend(additions)
+        self.stop_removed_tokens = [word for word in self.lower_tokens if word not in self.stopwords]
+
+    def get_text(self):
+        with open(self.filename, 'r') as file_in:
+            raw_text = file_in.read()
+        return raw_text
+
+our_corpus = Corpus('corpus/')
+
+poem_1 = Poem("corpus/poem1-ao-sayyo.txt")
+poem_2 = Poem("corpus/poem2-ik-nuqte.txt")
+
+for poem in our_corpus.poems:
+    print(poem.raw_tokens[0:9])
+    print('=======')
+
+# print(poem_1.stop_removed_tokens)
+# print('=========')
+# print(poem_2.stop_removed_tokens)
+# print('=========')
+# print(poem_2.stopwords)
+# print(our_corpus.poems)
+
+# print(test_object.upper_name)
+# print(test_object_2.name)
