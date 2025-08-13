@@ -1,11 +1,15 @@
 import nltk
 import os
+import pandas as pd
 
 class Corpus(object):
     def __init__(self, corpus_folder):
         self.corpus_dir = corpus_folder
         self.filenames = self.all_files()
-        self.poems = [Poem(fn) for fn in self.filenames]
+        # read in metadata file
+        self.metadata = pd.read_csv('metadata.csv')
+        
+        self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
 
     def all_files(self):
         """given a directory, return the filenames in it"""
@@ -20,8 +24,11 @@ class Corpus(object):
         return texts
 
 class Poem(object):
-    def __init__(self, fn):
+    def __init__(self, fn, metadata):
         self.filename = fn
+        self.poem_metadata = metadata.loc[metadata['filename'] == self.fn]
+        for item in self.poem_metadata:
+            setattr(self, item, self.poem_metadata[item].iloc[0])
         self.raw_text = self.get_text()
         self.raw_tokens = nltk.word_tokenize(self.raw_text)
         # TODO: not lowercasing, so do we need this?
