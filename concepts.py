@@ -16,11 +16,13 @@ class Coffee:
 # print(myCoffee.flavour)
 # print(c.temperature)
 
-    def __init__(self, temp = 0, flavour = 'bland', origin = 'yemen'):
+    def __init__(self, temp=0, flavour='bland', origin='yemen'):
         # above attributes default?
         self.temperature = temp
         self.flavour = flavour
         self.origin = origin
+
+        self.dangerous = "no"
     
     def change_temp(self, temp):
         self.temperature = temp
@@ -28,7 +30,7 @@ class Coffee:
 ethans_coffee = Coffee(80, 'spicy')
 # print(ethans_coffee.flavour)
 
-brandons_coffee = Coffee(90)
+brandons_coffee = Coffee(origin='brazil')
 # print(brandons_coffee.temperature)
 # print(brandons_coffee.flavour)
 print(brandons_coffee.origin)
