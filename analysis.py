@@ -7,9 +7,18 @@ class Corpus(object):
         self.corpus_dir = corpus_folder
         self.filenames = self.all_files()
         # read in metadata file
-        self.metadata = pd.read_csv('metadata.csv')
+        self.metadata = pd.read_csv('bs-metadata.csv')
         
-        self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
+        self.poems = []
+        for fn in self.filenames:
+            print('======')
+            print(fn)
+            try:
+                self.poems.append(Poem(fn, self.metadata))
+            except:
+                print(fn)
+
+        # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
 
     def all_files(self):
         """given a directory, return the filenames in it"""
@@ -25,8 +34,11 @@ class Corpus(object):
 
 class Poem(object):
     def __init__(self, fn, metadata):
-        self.filename = fn
-        self.poem_metadata = metadata.loc[metadata['filename'] == self.fn]
+        self.relative_filename = fn
+        print(self.relative_filename[7:])
+        # self.poem_metadata = metadata.loc[metadata['filename'] == self.fn]
+        self.poem_metadata = metadata.loc[metadata['filename'] == self.relative_filename[7:]]
+        print(self.poem_metadata)
         for item in self.poem_metadata:
             setattr(self, item, self.poem_metadata[item].iloc[0])
         self.raw_text = self.get_text()
@@ -42,14 +54,14 @@ class Poem(object):
         self.stop_removed_tokens = [word for word in self.lower_tokens if word not in self.stopwords]
 
     def get_text(self):
-        with open(self.filename, 'r') as file_in:
+        with open(self.relative_filename, 'r') as file_in:
             raw_text = file_in.read()
         return raw_text
 
 our_corpus = Corpus('corpus/')
 
-poem_1 = Poem("corpus/poem1-ao-sayyo.txt")
-poem_2 = Poem("corpus/poem2-ik-nuqte.txt")
+# poem_1 = Poem("corpus/poem1-ao-sayyo.txt",)
+# poem_2 = Poem("corpus/poem2-ik-nuqte.txt",)
 
 for poem in our_corpus.poems:
     print(poem.raw_tokens[0:9])
