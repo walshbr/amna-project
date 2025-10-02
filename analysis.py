@@ -2,6 +2,11 @@ import nltk
 import os
 import pandas as pd
 
+# TODO: make an output file for anything that we do
+# TODO: figure out a stopwords file
+# TODO: try out word embeddings for these text
+
+
 class Corpus(object):
     def __init__(self, corpus_folder):
         self.corpus_dir = corpus_folder
@@ -17,8 +22,19 @@ class Corpus(object):
                 self.poems.append(Poem(fn, self.metadata))
             except:
                 print(fn)
+        
+        self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
+        self.all_tokens = [poem.raw_tokens for poem in self.poems]
+        self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
+        self.corpus_fq = nltk.FreqDist(self.all_tokens)
 
         # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
+
+    def write_output(self, to_write):
+        """Write the results to a file so Amna can read it"""
+        #terminal is always LTR. so, keep a sep output file as endpoint
+        with open('output.txt', 'w') as outfile:
+            outfile.write(str(to_write))
 
     def all_files(self):
         """given a directory, return the filenames in it"""
@@ -58,21 +74,31 @@ class Poem(object):
             raw_text = file_in.read()
         return raw_text
 
-our_corpus = Corpus('corpus/')
+def main():
+    #This is all the stuff that will run if you type $ python analysis.py
+    our_corpus = Corpus('corpus/')
 
-# poem_1 = Poem("corpus/poem1-ao-sayyo.txt",)
-# poem_2 = Poem("corpus/poem2-ik-nuqte.txt",)
+    # poem_1 = Poem("corpus/poem1-ao-sayyo.txt",)
+    # poem_2 = Poem("corpus/poem2-ik-nuqte.txt",)
 
-for poem in our_corpus.poems:
-    print(poem.raw_tokens[0:9])
-    print('=======')
+    print('hello! this is the terminal version!')
 
-# print(poem_1.stop_removed_tokens)
-# print('=========')
-# print(poem_2.stop_removed_tokens)
-# print('=========')
-# print(poem_2.stopwords)
-# print(our_corpus.poems)
+    for poem in our_corpus.poems:
+        print(poem.raw_tokens[0:9])
+        print('=======')
 
-# print(test_object.upper_name)
-# print(test_object_2.name)
+
+# this allows you to import the classes as a module. it uses the special built-in variable __name__ set to the value "__main__" if the module is being run as the main program
+if __name__ == "__main__":
+    main()
+
+# to work in the interpreter
+# python
+# >>> import analysis
+# >>>  our_corpus = analysis.Corpus('corpus/')
+# >>> our_corpus.poems
+
+# if something changes in the analysis file, save the file, then
+# >>> import importlib
+# >>> importlib.reload(analysis)
+# >>> our_corpus = analysis.Corpus('corpus/')
