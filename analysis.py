@@ -18,12 +18,7 @@ class Corpus(object):
         for fn in self.filenames:
             print('======')
             print(fn)
-            try:
-                self.poems.append(Poem(fn, self.metadata))
-                print('look it worked!')
-            except:
-                print('look an error!')
-                print(fn)
+            self.poems.append(Poem(fn, self.metadata))
         
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
         self.all_tokens = [poem.raw_tokens for poem in self.poems]
