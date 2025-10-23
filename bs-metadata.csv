@@ -1,11 +1,11 @@
-name,number(ss),filename,genre,transmission,narrative-voice,explicitness
+name,number(ss),filename,genre,transmission,narrative_voice,explicitness
 alif allah,1,1-alif-allah.txt,kafi,t,u,u
 ab agan lagi,3,3-ab-lagan-lagi.txt,kafi,t,f,i
 apne sang ralain,5,5-apne-sang-ralain.txt,kafi,t,u,u
 uth jaag ghurare,6,6-uth-jaag-ghurare.txt,kafi,t,f,i
 uth gae gawandon,7,7-uth-gae-gawandon.txt,kafi,t,u,u
 ik ranjha,9,9-ik-ranjha.txt,kafi,t,f,e
-ik nuqte,10,10-ik-nuqte.txt,kafi,t,u,u
+ik nuqte,10,10-ik-nuqte.txt,kafi,t
 ik alif parho,11,11-ik-alif-parho.txt,kafi,t,u,u
 ulte hor zamane,14,14-ulte-hor-zamane.txt,kafi,t,u,u
 a mil yaara,17,17-a-mil-yaara.txt,kafi,t,f,e
