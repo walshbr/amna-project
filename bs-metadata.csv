@@ -1,22 +1,21 @@
-poem,number (SS),filename,genre,transmission (t/o),narrative voice (f/m/u [unspecified]),explicit/ implicit
-alif allah,1,poem1-alif-allah.txt,kafi,t,u,u
-ab agan lagi,3,poem3-ab-lagan-lagi.txt,kafi,t,f,i
-apne sang ralain,5,poem5-apne-sang-ralain.txt,kafi,t,u,u
-uth jaag ghurare,6,poem6-uth-jaag-ghurare.txt,kafi,t,f,i
-uth gae gawandon,7,poem7-uth-gae-gawandon.txt,kafi,t,u,u
-ik alif parho,8,poem8-ik-alif-parho.txt,kafi,t,u,u
-ik ranjha,9,poem9-ik-ranjha.txt,kafi,t,f,e
-ik nuqte,10,poem10-ik-nuqte.txt,kafi,t,u,u
-ulte hor zamane,13,poem13-ulte-hor-zamane.txt,kafi,t,u,u
-a mil yaara,21,poem21-a-mil-yaara.txt,kafi,t,f,e
-ao sayyo,22,poem22-ao-sayyo.txt,kafi,t,f,e
-bas kar ji,24,poem24-bas-kar-ji.txt,kafi,t,f,e
-bullha ki janan,26,poem26-bullha-ki-janan.txt,kafi,t,u,u
-bullhe nu samjhawan,27,poem27-bullhe-nu-samjhawan.txt,kafi,t,m,e
-bhena main katdi,32,poem32-bhena-main-katdi.txt,kafi,t,f,e
-tere ishq nachaya,47,poem47-tere-ishq-nachaya.txt,kafi,t,f,e
-jis tan lageya,52,poem52-jis-tan-lageya.txt,kafi,t,u,u
-jind kurikki,54,poem54-jind-kurikki.txt,kafi,t,f,e
-chup kar ke,55,poem55-chup-kar-ke.txt,kafi,t,u,u
-ranjha ranjha,63,poem63-ranjha-ranjha.txt,kafi,t,f,e
-ilmon bas,78,poem78-ilmon-bas.txt,kafi,t,u,u
+poem,number(ss),filename,genre,transmission,narrative-voice,explicitness
+alif allah,1,1-alif-allah.txt,kafi,t,u,u
+ab agan lagi,3,3-ab-lagan-lagi.txt,kafi,t,f,i
+apne sang ralain,5,5-apne-sang-ralain.txt,kafi,t,u,u
+uth jaag ghurare,6,6-uth-jaag-ghurare.txt,kafi,t,f,i
+uth gae gawandon,7,7-uth-gae-gawandon.txt,kafi,t,u,u
+ik ranjha,9,9-ik-ranjha.txt,kafi,t,f,e
+ik nuqte,10,10-ik-nuqte.txt,kafi,t,u,u
+ik alif parho,11,11-ik-alif-parho.txt,kafi,t,u,u
+ulte hor zamane,14,14-ulte-hor-zamane.txt,kafi,t,u,u
+a mil yaara,17,17-a-mil-yaara.txt,kafi,t,f,e
+ao sayyo,19,19-ao-sayyo.txt,kafi,t,f,e
+bas kar ji,24,24-bas-kar-ji.txt,kafi,t,f,e
+bullheya ki janan,26,26-bullheya-ki-janan.txt,kafi,t,u,u
+bullhe nu samjhawan,27,27-bullhe-nu-samjhawan.txt,kafi,t,m,e
+bhena main katdi,31,31-bhena-main-katdi.txt,kafi,t,f,e
+jis tan lageya,53,53-jis-tan-lageya.txt,kafi,t,u,u
+jind kurikki,54,54-jind-kurikki.txt,kafi,t,f,e
+chup kar ke,56,56-chup-kar-ke.txt,kafi,t,u,u
+ranjha ranjha,64,64-ranjha-ranjha.txt,kafi,t,f,e
+ilmon bas,80,80-ilmon-bas.txt,kafi,t,u,u
