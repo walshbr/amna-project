@@ -1,4 +1,4 @@
-poem,number(ss),filename,genre,transmission,narrative-voice,explicitness
+name,number(ss),filename,genre,transmission,narrative-voice,explicitness
 alif allah,1,1-alif-allah.txt,kafi,t,u,u
 ab agan lagi,3,3-ab-lagan-lagi.txt,kafi,t,f,i
 apne sang ralain,5,5-apne-sang-ralain.txt,kafi,t,u,u

@@ -19,7 +19,9 @@ class Corpus(object):
             print('======')
             print(fn)
             self.poems.append(Poem(fn, self.metadata))
-        
+
+        self.poem_lengths_in_lines = [(poem.name,len(poem.flat_lines)) for poem in self.poems]
+        # TODO: order the poems in some way
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
         self.all_tokens = [poem.raw_tokens for poem in self.poems]
         self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
@@ -55,6 +57,9 @@ class Poem(object):
         for item in self.poem_metadata:
             setattr(self, item, self.poem_metadata[item].iloc[0])
         self.raw_text = self.get_text()
+        self.poem_stanzas = self.raw_text.split('\n\n')
+        self.poem_lines_as_stanzas = [stanza.splitlines() for stanza in self.poem_stanzas]
+        self.flat_lines = [item for sublist in self.poem_lines_as_stanzas for item in sublist]
         self.raw_tokens = nltk.word_tokenize(self.raw_text)
         # TODO: not lowercasing, so do we need this?
         self.lower_tokens = [word.lower() for word in self.raw_tokens]
