@@ -98,7 +98,7 @@ if __name__ == "__main__":
 # >>>  our_corpus = analysis.Corpus('corpus/')
 # >>> our_corpus.poems
 
-# if something changes in the analysis file, save the file, then
+# if something changes in the analysis file, save the file, then ---only if youre in the same instance 
 # >>> import importlib
 # >>> importlib.reload(analysis)
 # >>> our_corpus = analysis.Corpus('corpus/')
