@@ -54,17 +54,14 @@ class Poem(object):
         print(self.poem_metadata)
         for item in self.poem_metadata:
             setattr(self, item, self.poem_metadata[item].iloc[0])
-        print('62')
         self.raw_text = self.get_text()
         self.raw_tokens = nltk.word_tokenize(self.raw_text)
         # TODO: not lowercasing, so do we need this?
-        print('65')
         self.lower_tokens = [word.lower() for word in self.raw_tokens]
         # TODO: find better stopwords list
         with open('pun_stopwords.txt', 'r') as fin:
             self.stopwords = [line.strip() for line in fin.readlines()]
             # TODO: remove diacritical markings
-        print('71')
         additions = ['آؤ'] 
         self.stopwords.extend(additions)
         self.stop_removed_tokens = [word for word in self.lower_tokens if word not in self.stopwords]
