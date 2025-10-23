@@ -20,7 +20,9 @@ class Corpus(object):
             print(fn)
             try:
                 self.poems.append(Poem(fn, self.metadata))
+                print('look it worked!')
             except:
+                print('look an error!')
                 print(fn)
         
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
@@ -95,7 +97,7 @@ if __name__ == "__main__":
 # to work in the interpreter
 # python
 # >>> import analysis
-# >>>  our_corpus = analysis.Corpus('corpus/')
+# >>> our_corpus = analysis.Corpus('corpus/')
 # >>> our_corpus.poems
 
 # if something changes in the analysis file, save the file, then
