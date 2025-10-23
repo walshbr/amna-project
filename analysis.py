@@ -62,7 +62,7 @@ class Poem(object):
         # TODO: not lowercasing, so do we need this?
         self.lower_tokens = [word.lower() for word in self.raw_tokens]
         # TODO: find better stopwords list
-        with open('ur_stopwords.txt', 'r') as fin:
+        with open('pun_stopwords.txt', 'r') as fin:
             self.stopwords = [line.strip() for line in fin.readlines()]
             # TODO: remove diacritical markings
         additions = ['آؤ'] 
