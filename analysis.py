@@ -26,6 +26,7 @@ class Corpus(object):
         self.all_tokens = [poem.raw_tokens for poem in self.poems]
         self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
         self.corpus_fq = nltk.FreqDist(self.all_tokens)
+        self.narrative_voices = [(poem.name, poem.narrative_voice) for poem in self.poems]
 
         # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
 
