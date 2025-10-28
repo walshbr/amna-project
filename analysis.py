@@ -3,8 +3,8 @@ import os
 import pandas as pd
 
 # TODO: make an output file for anything that we do
-# TODO: figure out a stopwords file
 # TODO: try out word embeddings for these text
+# TODO: lemmatize the texts
 
 
 class Corpus(object):
@@ -25,7 +25,8 @@ class Corpus(object):
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
         self.all_tokens = [poem.raw_tokens for poem in self.poems]
         self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
-        self.corpus_fq = nltk.FreqDist(self.all_tokens)
+        self.nltk_text = nltk.Text(self.all_tokens)
+        self.fq = nltk.FreqDist(self.all_tokens)
 
         # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
 
@@ -34,6 +35,7 @@ class Corpus(object):
         #terminal is always LTR. so, keep a sep output file as endpoint
         with open('output.txt', 'w') as outfile:
             outfile.write(str(to_write))
+        print('complete')
 
     def all_files(self):
         """given a directory, return the filenames in it"""
@@ -70,6 +72,8 @@ class Poem(object):
         additions = ['آؤ'] 
         self.stopwords.extend(additions)
         self.stop_removed_tokens = [word for word in self.lower_tokens if word not in self.stopwords]
+        self.nltk_text = nltk.Text(self.stop_removed_tokens)
+        self.fq = nltk.FreqDist(self.stop_removed_tokens)
 
     def get_text(self):
         with open(self.relative_filename, 'r') as file_in:
@@ -108,3 +112,7 @@ if __name__ == "__main__":
 # >>> import importlib
 # >>> importlib.reload(analysis)
 # >>> our_corpus = analysis.Corpus('corpus/')
+# >>> our_corpus.write_output(SOMETHING TO OUTPUT)
+# as in 
+# >>> our_corpus.write_output(our_corpus.fq.hapaxes())
+# >>> our_corpus.write_output(our_corpus.poems[0])

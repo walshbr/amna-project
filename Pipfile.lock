@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a8fb15bd48e3e7dd45bf6b10a59b491561608188a4e99f382e12baee01ba4b6c"
+            "sha256": "493d3073c2726c99e0dbc07e006af9988227fa27e4e8645ec02f0eac7135bd9c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -169,6 +169,15 @@
             "index": "pypi",
             "markers": "python_version >= '3.9'",
             "version": "==2.3.2"
+        },
+        "punjabi-stemmer": {
+            "hashes": [
+                "sha256:423eb96dd4804bf493dd20a09af3b2f8d7a2d1caebdcb2a21d082833c94cb7d0",
+                "sha256:563dfa0c56450f3af3facfc39a5be8a4908068ea8368d26d8155f187442a19c6"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==1.0.1"
         },
         "python-dateutil": {
             "hashes": [
