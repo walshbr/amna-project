@@ -2,3 +2,4 @@ corpus
 .DS_Store
 corpus.zip
 .vscode/
+__pycache__
