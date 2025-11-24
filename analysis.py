@@ -20,12 +20,7 @@ class Corpus(object):
             print('======')
             print(fn)
             self.poems.append(Poem(fn, self.metadata))
-        self.metadata = pd.read_csv('bs-metadata.csv')
-        self.poems = []
-        for fn in self.filenames:
-            print('======')
-            print(fn)
-            self.poems.append(Poem(fn, self.metadata))
+
         self.poem_lengths_in_lines = [(poem.name,len(poem.flat_lines)) for poem in self.poems]
         # TODO: order the poems in some way
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
@@ -38,6 +33,18 @@ class Corpus(object):
         # read out all hapaxes for the corpus
         self.hapaxes = self.fq.hapaxes()
     
+    def divide_corpus_by_length(self,length_limit):
+        self.raw_corpus_subset = {'greater_than_' + str(length_limit) + '_lines': [], 'less_than_' + str(length_limit) + '_lines': []}
+        for poem in self.poems:
+            if poem.num_total_lines >= length_limit:
+                self.raw_corpus_subset['greater_than_' + str(length_limit) + '_lines'].append(poem)
+            else:
+                self.raw_corpus_subset['less_than_' + str(length_limit) + '_lines'].append(poem)
+        self.corpus_subset = {}
+        for key in self.raw_corpus_subset.keys():
+            self.corpus_subset[key] = Subset(self.raw_corpus_subset[key])
+        self.corpus_subset_as_list = [Subset(self.raw_corpus_subset[key]) for key in self.raw_corpus_subset.keys()]
+
     def divide_corpus_by_metadata_query(self,query):
         """example usage:
         corpus.divide_corpus_by_metadata_query('narrative_voice')
