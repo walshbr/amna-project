@@ -28,8 +28,9 @@ class Corpus(object):
         self.corpus_fq = nltk.FreqDist(self.all_tokens)
         self.narrative_voices = [(poem.name, poem.narrative_voice) for poem in self.poems]
         self.nltk_corpus = nltk.Text(self.all_tokens)
+        # 
         self.fq = nltk.FreqDist(self.all_tokens)
-
+        
         # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
 
     def corpus_concordance(self,token):
@@ -86,6 +87,17 @@ class Poem(object):
         self.num_total_lines = len(self.flat_lines)
         # gives number of stanzas
         self.num_stanzas = len(self.poem_lines_as_stanzas)
+        # length stats
+        self.shortest_line = min(self.flat_lines, key=len)
+        self.longest_line = max(self.flat_lines, key=len)
+        # total number of tokens divided by total number of lines
+        self.average_line_length = len(self.raw_tokens) / len(self.flat_lines)
+        # total number of tokens divided by total number of stanzas
+        self.average_stanza_length = len(self.raw_tokens) / len(self.poem_lines_as_stanzas)
+        # length of each line in poem as a big list
+        self.line_lengths_over_poem = [len(nltk.word_tokenize(line)) for line in self.flat_lines]
+        # length of each line but preserving stanza structure
+        self.line_lengths_preserving_stanzas = [[len(nltk.word_tokenize(line)) for line in stanza] for stanza in self.poem_lines_as_stanzas]
 
     def get_text(self):
         with open(self.relative_filename, 'r') as file_in:
