@@ -27,10 +27,16 @@ class Corpus(object):
         self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
         self.corpus_fq = nltk.FreqDist(self.all_tokens)
         self.narrative_voices = [(poem.name, poem.narrative_voice) for poem in self.poems]
-        self.nltk_text = nltk.Text(self.all_tokens)
+        self.nltk_corpus = nltk.Text(self.all_tokens)
         self.fq = nltk.FreqDist(self.all_tokens)
 
         # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
+
+    def corpus_concordance(self,token):
+        for poem in self.poems:
+            print(poem.name)
+            poem.nltk_poem.concordance(token)
+            print('======')
 
     def write_output(self, to_write):
         """Write the results to a file so Amna can read it"""
@@ -74,7 +80,7 @@ class Poem(object):
         additions = ['آؤ'] 
         self.stopwords.extend(additions)
         self.stop_removed_tokens = [word for word in self.lower_tokens if word not in self.stopwords]
-        self.nltk_text = nltk.Text(self.stop_removed_tokens)
+        self.nltk_poem = nltk.Text(self.stop_removed_tokens)
         self.fq = nltk.FreqDist(self.stop_removed_tokens)
 
     def get_text(self):
@@ -118,3 +124,5 @@ if __name__ == "__main__":
 # as in 
 # >>> our_corpus.write_output(our_corpus.fq.hapaxes())
 # >>> our_corpus.write_output(our_corpus.poems[0])
+
+# >>> our_corpus.corpus_concordance('دھاڑے')
