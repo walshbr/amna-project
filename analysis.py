@@ -30,7 +30,7 @@ class Corpus(object):
         self.nltk_corpus = nltk.Text(self.all_tokens)
         self.fq = nltk.FreqDist(self.all_tokens)
         # read out all hapaxes for the corpus
-        self.fq.hapaxes()
+        self.hapaxes = self.fq.hapaxes()
         
         # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
 
