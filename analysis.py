@@ -33,6 +33,10 @@ class Corpus(object):
         # read out all hapaxes for the corpus
         self.hapaxes = self.fq.hapaxes()
     
+    def count_occurrences_by_poem(self,query):
+        """give a word to query across the whole set of poems and return a list of all those word counts"""
+        return [poem.fq[query] for poem in self.poems]
+
     def divide_corpus_by_length(self,length_limit):
         self.raw_corpus_subset = {'greater_than_' + str(length_limit) + '_lines': [], 'less_than_' + str(length_limit) + '_lines': []}
         for poem in self.poems:
