@@ -1,6 +1,7 @@
 import nltk
 import os
 import pandas as pd
+from collections import defaultdict
 
 # TODO: make an output file for anything that we do
 # TODO: try out word embeddings for these text
@@ -19,7 +20,12 @@ class Corpus(object):
             print('======')
             print(fn)
             self.poems.append(Poem(fn, self.metadata))
-
+        self.metadata = pd.read_csv('bs-metadata.csv')
+        self.poems = []
+        for fn in self.filenames:
+            print('======')
+            print(fn)
+            self.poems.append(Poem(fn, self.metadata))
         self.poem_lengths_in_lines = [(poem.name,len(poem.flat_lines)) for poem in self.poems]
         # TODO: order the poems in some way
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
@@ -31,8 +37,23 @@ class Corpus(object):
         self.fq = nltk.FreqDist(self.all_tokens)
         # read out all hapaxes for the corpus
         self.hapaxes = self.fq.hapaxes()
-        
-        # self.poems = [Poem(fn, self.metadata) for fn in self.filenames]
+    
+    def divide_corpus_by_metadata_query(self,query):
+        """example usage:
+        corpus.divide_corpus_by_metadata_query('narrative_voice')
+        will create a new corpus attribute called corpus.corpus_subsets that divides the corpus into subsets based on your query
+        """
+        subsets = defaultdict(list)
+        for poem in self.poems:
+            value = getattr(poem, query)
+            subsets[value].append(poem)
+
+        self.raw_corpus_subset = dict(subsets)
+        self.corpus_subset = {}
+        for key in self.raw_corpus_subset.keys():
+            self.corpus_subset[key] = Subset(self.raw_corpus_subset[key])
+        self.corpus_subset_as_list = [Subset(self.raw_corpus_subset[key]) for key in self.raw_corpus_subset.keys()]
+    
 
     def corpus_concordance(self,token):
         for poem in self.poems:
@@ -60,6 +81,7 @@ class Corpus(object):
         return texts
 
 class Poem(object):
+    
     def __init__(self, fn, metadata):
         self.relative_filename = fn
         print(self.relative_filename[7:])
@@ -104,6 +126,22 @@ class Poem(object):
         with open(self.relative_filename, 'r') as file_in:
             raw_text = file_in.read()
         return raw_text
+
+class Subset(object):
+    def __init__(self, poems):
+        self.poems = poems
+        self.poem_lengths_in_lines = [(poem.name,len(poem.flat_lines)) for poem in self.poems]
+        # TODO: order the poems in some way
+        self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
+        self.all_tokens = [poem.raw_tokens for poem in self.poems]
+        self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
+        self.corpus_fq = nltk.FreqDist(self.all_tokens)
+        self.narrative_voices = [(poem.name, poem.narrative_voice) for poem in self.poems]
+        self.nltk_corpus = nltk.Text(self.all_tokens)
+        self.fq = nltk.FreqDist(self.all_tokens)
+        # read out all hapaxes for the corpus
+        self.hapaxes = self.fq.hapaxes()
+    
 
 def main():
     #This is all the stuff that will run if you type $ python analysis.py
