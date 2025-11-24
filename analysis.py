@@ -82,6 +82,10 @@ class Poem(object):
         self.stop_removed_tokens = [word for word in self.lower_tokens if word not in self.stopwords]
         self.nltk_poem = nltk.Text(self.stop_removed_tokens)
         self.fq = nltk.FreqDist(self.stop_removed_tokens)
+        # gives number of lines
+        self.num_total_lines = len(self.flat_lines)
+        # gives number of stanzas
+        self.num_stanzas = len(self.poem_lines_as_stanzas)
 
     def get_text(self):
         with open(self.relative_filename, 'r') as file_in:
