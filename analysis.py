@@ -2,8 +2,13 @@ import nltk
 import os
 import pandas as pd
 from collections import defaultdict
+from Punjabi_Stemmer import PunjabiStemmer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import KMeans
+import seaborn as sns
 
-# TODO: make an output file for anything that we do
+
 # TODO: try out word embeddings for these text
 # TODO: lemmatize the texts
 
@@ -65,8 +70,13 @@ class Corpus(object):
             self.corpus_subset[key] = Subset(self.raw_corpus_subset[key])
         self.corpus_subset_as_list = [Subset(self.raw_corpus_subset[key]) for key in self.raw_corpus_subset.keys()]
     
+    def count_word_by_subset(self, query):
+        for key in self.corpus_subset.keys():
+            print('=====')
+            print(key)
+            print(self.corpus_subset[key].fq[query])
 
-    def corpus_concordance(self,token):
+    def concordance(self,token):
         for poem in self.poems:
             print(poem.name)
             poem.nltk_poem.concordance(token)
@@ -91,6 +101,26 @@ class Corpus(object):
                     texts.append(path)
         return texts
 
+    def cluster(self):
+        vectorizer = TfidfVectorizer()
+        docs = [poem.raw_text for poem in self.poems]
+        tfidf_matrix = vectorizer.fit_transform(docs)
+        X = vectorizer.fit_transform(docs)
+        print(tfidf_matrix.toarray())
+        similarity_matrix = cosine_similarity(tfidf_matrix)
+        print(similarity_matrix)
+
+        num_clusters = 2
+        kmeans_model = KMeans(n_clusters=num_clusters, random_state=42, n_init=10)
+        clusters = kmeans_model.fit_predict(tfidf_matrix)
+
+        print(clusters)
+
+        X = X.toarray()
+        sns.scatterplot(x=X[:,0], y=X[:,5], hue=clusters, palette='rainbow')
+        plt.show()
+
+
 class Poem(object):
     
     def __init__(self, fn, metadata):
@@ -108,6 +138,10 @@ class Poem(object):
         self.raw_tokens = nltk.word_tokenize(self.raw_text)
         # TODO: not lowercasing, so do we need this?
         self.lower_tokens = [word.lower() for word in self.raw_tokens]
+        #### stemming ####
+        stemmer = PunjabiStemmer()
+        self.stemmed_tokens = [stemmer.stem_word(word) for word in self.lower_tokens]
+        #### stemming ####
         # TODO: find better stopwords list
         with open('pun_stopwords.txt', 'r') as fin:
             self.stopwords = [line.strip() for line in fin.readlines()]
@@ -192,3 +226,14 @@ if __name__ == "__main__":
 # >>> our_corpus.write_output(our_corpus.poems[0])
 
 # >>> our_corpus.corpus_concordance('دھاڑے')
+
+# when using a subset corpus
+# our_corpus.divide_corpus_by_length(15)
+# our_corpus.corpus_subset['greater_than_15_lines'].narrative_voices
+# our_corpus.corpus_subset['less_than_15_lines'].narrative_voices
+
+# our_corpus.divide_corpus_by_metadata_query('narrative_voice')
+# our_corpus.corpus_subset['u'].poems
+
+# [poem.fq['میں'] for poem in our_corpus.corpus_subset['u'].poems]
+# our_corpus.count_word_by_subset('میں')
