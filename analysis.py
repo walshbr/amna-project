@@ -3,10 +3,10 @@ import os
 import pandas as pd
 from collections import defaultdict
 from Punjabi_Stemmer import PunjabiStemmer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.cluster import KMeans
-import seaborn as sns
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.metrics.pairwise import cosine_similarity
+# from sklearn.cluster import KMeans
+# import seaborn as sns
 
 
 # TODO: try out word embeddings for these text
