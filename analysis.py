@@ -58,6 +58,7 @@ class Corpus(object):
         for key in self.raw_corpus_subset.keys():
             self.corpus_subset[key] = Subset(self.raw_corpus_subset[key])
         self.corpus_subset_as_list = [Subset(self.raw_corpus_subset[key]) for key in self.raw_corpus_subset.keys()]
+        self.query = length_limit
 
     def divide_corpus_by_metadata_query(self,query):
         """example usage:
@@ -74,6 +75,7 @@ class Corpus(object):
         for key in self.raw_corpus_subset.keys():
             self.corpus_subset[key] = Subset(self.raw_corpus_subset[key])
         self.corpus_subset_as_list = [Subset(self.raw_corpus_subset[key]) for key in self.raw_corpus_subset.keys()]
+        self.query = query
     
     def count_word_by_subset(self, query):
         for key in self.corpus_subset.keys():
@@ -141,8 +143,92 @@ class Corpus(object):
         plt.tight_layout()
         plt.show()
 
+    def basic_graph(self,token_query):
 
+        """graph a word count. assumes you have previously run a divide function to generate corpus subsets"""
+        if hasattr(self, 'corpus_subset'):
+            fig, ax = plt.subplots()
 
+            metadata_keys = self.corpus_subset.keys()
+            metadata_values = []
+            for subset in self.corpus_subset_as_list:
+                metadata_values.append(subset.fq[token_query])
+
+            ax.bar(metadata_keys, metadata_values)
+
+            # if we wanted colors
+            # bar_labels = ['red', 'blue', '_red', 'orange']
+            # bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+            # ax.bar(metadata_keys, metadata_values, label=bar_labels[:len(metadata_keys)], color=bar_colors[:len(metadata_keys)])
+
+            ax.set_ylabel("Counts")
+            if type(self.query) == int:
+                ax.set_xlabel("Corpus subdivided by token limit " + str(self.query))
+            else:
+                ax.set_xlabel("Corpus subdivided by " + self.query)
+            ax.set_title('Counts of token ' + token_query)
+            # ax.legend(title='Counts of token' + token_query)
+
+            plt.show()
+        else:
+            fig, ax = plt.subplots()
+
+            poem_names = [poem.name for poem in self.poems]
+            poem_counts = [poem.fq[token_query] for poem in self.poems]
+
+            ax.bar(poem_names, poem_counts)
+
+            # if we wanted colors
+            # bar_labels = ['red', 'blue', '_red', 'orange']
+            # bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+            # ax.bar(metadata_keys, metadata_values, label=bar_labels[:len(metadata_keys)], color=bar_colors[:len(metadata_keys)])
+
+            ax.set_ylabel("Counts")
+            ax.set_xlabel("Poem name")
+            ax.set_title('Counts of token ' + token_query)
+            # ax.legend(title='Counts of token' + token_query)
+
+            plt.show()
+
+    def most_common_graph(self):
+        """graph most common tokens"""
+        if hasattr(self, 'corpus_subset'):
+            fig, axs = plt.subplots(len(self.corpus_subset_as_list))
+            fig.suptitle('Ten Most Common Tokens in Corpus Subdivided by ' + str(self.query))
+            for index, subset in enumerate(self.corpus_subset_as_list):
+                most_common_raw = subset.fq.most_common(10)
+                most_common_tokens = [token[0] for token in most_common_raw]
+                most_common_counts = [token[1] for token in most_common_raw]
+                axs[index].bar(most_common_tokens, most_common_counts)
+
+            # if we wanted colors
+            # bar_labels = ['red', 'blue', '_red', 'orange']
+            # bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+            # ax.bar(metadata_keys, metadata_values, label=bar_labels[:len(metadata_keys)], color=bar_colors[:len(metadata_keys)])
+
+            plt.show()
+        else:
+            fig, ax = plt.subplots()
+
+            most_common_raw = self.fq.most_common(10)
+            most_common_tokens = [token[0] for token in most_common_raw]
+            most_common_counts = [token[1] for token in most_common_raw]
+
+            ax.bar(most_common_tokens, most_common_counts)
+
+            # if we wanted colors
+            # bar_labels = ['red', 'blue', '_red', 'orange']
+            # bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
+
+            # ax.bar(metadata_keys, metadata_values, label=bar_labels[:len(metadata_keys)], color=bar_colors[:len(metadata_keys)])
+
+            ax.set_title('Ten Most Common Tokens in Corpus')
+            # ax.legend(title='Counts of token' + token_query)
+
+            plt.show()
 
 class Poem(object):
     
