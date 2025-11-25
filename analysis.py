@@ -7,6 +7,9 @@ from Punjabi_Stemmer import PunjabiStemmer
 # from sklearn.metrics.pairwise import cosine_similarity
 # from sklearn.cluster import KMeans
 # import seaborn as sns
+# import matplotlib.pyplot as plt
+# from sklearn.decomposition import PCA
+
 
 
 # TODO: try out word embeddings for these text
@@ -106,21 +109,39 @@ class Corpus(object):
     def cluster(self):
         vectorizer = TfidfVectorizer()
         docs = [poem.raw_text for poem in self.poems]
+        labels = [poem.name for poem in self.poems]
         tfidf_matrix = vectorizer.fit_transform(docs)
         X = vectorizer.fit_transform(docs)
         print(tfidf_matrix.toarray())
         similarity_matrix = cosine_similarity(tfidf_matrix)
         print(similarity_matrix)
 
-        num_clusters = 2
+        num_clusters = 4
         kmeans_model = KMeans(n_clusters=num_clusters, random_state=42, n_init=10)
         clusters = kmeans_model.fit_predict(tfidf_matrix)
 
         print(clusters)
 
         X = X.toarray()
-        sns.scatterplot(x=X[:,0], y=X[:,5], hue=clusters, palette='rainbow')
+        # sns.scatterplot(x=X[:,0], y=X[:,5], hue=clusters, palette='rainbow')
+        # plt.show()
+        pca=PCA(n_components=2)
+        reduced_X=pd.DataFrame(data=pca.fit_transform(X),columns=['PCA1','PCA2'])
+        print(reduced_X.head())
+        centers=pca.transform(kmeans_model.cluster_centers_)
+        plt.figure(figsize=(7,5))
+        # Scatter plot
+        plt.scatter(reduced_X['PCA1'],reduced_X['PCA2'],c=kmeans_model.labels_)
+        # plt.scatter(centers[:,0],centers[:,1],marker='x',s=100,c='red')
+        for i,txt in enumerate(labels):
+            plt.annotate(txt, (reduced_X['PCA1'][i], reduced_X['PCA2'][i]))
+        plt.xlabel('PCA1')
+        plt.ylabel('PCA2')
+        plt.title('Poetry Cluster')
+        plt.tight_layout()
         plt.show()
+
+
 
 
 class Poem(object):
