@@ -3,12 +3,12 @@ import os
 import pandas as pd
 from collections import defaultdict
 from Punjabi_Stemmer import PunjabiStemmer
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from sklearn.metrics.pairwise import cosine_similarity
-# from sklearn.cluster import KMeans
-# import seaborn as sns
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.cluster import KMeans
+import seaborn as sns
 import matplotlib.pyplot as plt
-# from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA
 from bidi.algorithm import get_display
 import arabic_reshaper
 
