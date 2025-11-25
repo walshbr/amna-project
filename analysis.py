@@ -9,6 +9,9 @@ from sklearn.cluster import KMeans
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
+from bidi.algorithm import get_display
+import arabic_reshaper
+
 
 
 
@@ -167,14 +170,15 @@ class Corpus(object):
                 ax.set_xlabel("Corpus subdivided by token limit " + str(self.query))
             else:
                 ax.set_xlabel("Corpus subdivided by " + self.query)
-            ax.set_title('Counts of token ' + token_query)
+            ax.set_title('Counts of token ' + self.reshape_on_the_fly(token_query))
             # ax.legend(title='Counts of token' + token_query)
 
+            plt.rcParams['font.family'] = 'Arial'
             plt.show()
         else:
             fig, ax = plt.subplots()
 
-            poem_names = [poem.name for poem in self.poems]
+            poem_names = [self.reshape_on_the_fly(poem.name) for poem in self.poems]
             poem_counts = [poem.fq[token_query] for poem in self.poems]
 
             ax.bar(poem_names, poem_counts)
@@ -187,34 +191,35 @@ class Corpus(object):
 
             ax.set_ylabel("Counts")
             ax.set_xlabel("Poem name")
-            ax.set_title('Counts of token ' + token_query)
+            ax.set_title('Counts of token ' + self.reshape_on_the_fly(token_query))
             # ax.legend(title='Counts of token' + token_query)
-
+            plt.rcParams['font.family'] = 'Arial'
             plt.show()
+
+    def reshape_on_the_fly(self, text):
+        reshaped_text = arabic_reshaper.reshape(text)
+        artext = get_display(reshaped_text)
+        return artext
 
     def most_common_graph(self):
         """graph most common tokens"""
         if hasattr(self, 'corpus_subset'):
-            fig, axs = plt.subplots(len(self.corpus_subset_as_list))
+            fig, axs = plt.subplots(len(self.corpus_subset_as_list),sharey=True)
             fig.suptitle('Ten Most Common Tokens in Corpus Subdivided by ' + str(self.query))
             for index, subset in enumerate(self.corpus_subset_as_list):
                 most_common_raw = subset.fq.most_common(10)
-                most_common_tokens = [token[0] for token in most_common_raw]
+                most_common_tokens = [self.reshape_on_the_fly(token[0]) for token in most_common_raw]
                 most_common_counts = [token[1] for token in most_common_raw]
                 axs[index].bar(most_common_tokens, most_common_counts)
-
-            # if we wanted colors
-            # bar_labels = ['red', 'blue', '_red', 'orange']
-            # bar_colors = ['tab:red', 'tab:blue', 'tab:red', 'tab:orange']
-
-            # ax.bar(metadata_keys, metadata_values, label=bar_labels[:len(metadata_keys)], color=bar_colors[:len(metadata_keys)])
-
+                axs[index].set_title(list(self.corpus_subset.keys())[index])
+            fig.tight_layout()
+            plt.rcParams['font.family'] = 'Arial'
             plt.show()
         else:
             fig, ax = plt.subplots()
 
             most_common_raw = self.fq.most_common(10)
-            most_common_tokens = [token[0] for token in most_common_raw]
+            most_common_tokens = [self.reshape_on_the_fly(token[0]) for token in most_common_raw]
             most_common_counts = [token[1] for token in most_common_raw]
 
             ax.bar(most_common_tokens, most_common_counts)
@@ -227,7 +232,7 @@ class Corpus(object):
 
             ax.set_title('Ten Most Common Tokens in Corpus')
             # ax.legend(title='Counts of token' + token_query)
-
+            plt.rcParams['font.family'] = 'Arial'
             plt.show()
 
 class Poem(object):

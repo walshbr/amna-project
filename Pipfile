@@ -9,6 +9,8 @@ pandas = "*"
 punjabi-stemmer = "*"
 matplotlib = "*"
 scikit-learn = "*"
+python-bidi = "*"
+arabic-reshaper = "*"
 
 [dev-packages]
 
