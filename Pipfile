@@ -8,6 +8,8 @@ nltk = "*"
 pandas = "*"
 punjabi-stemmer = "*"
 matplotlib = "*"
+python-bidi = "*"
+arabic-reshaper = "*"
 
 [dev-packages]
 
