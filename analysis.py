@@ -213,7 +213,6 @@ class Corpus(object):
                 axs[index].bar(most_common_tokens, most_common_counts)
                 axs[index].set_title(list(self.corpus_subset.keys())[index])
             fig.tight_layout()
-            plt.rcParams['font.family'] = 'Arial'
             plt.show()
         else:
             fig, ax = plt.subplots()
@@ -232,7 +231,7 @@ class Corpus(object):
 
             ax.set_title('Ten Most Common Tokens in Corpus')
             # ax.legend(title='Counts of token' + token_query)
-            plt.rcParams['font.family'] = 'Arial'
+
             plt.show()
 
 class Poem(object):
