@@ -23,7 +23,7 @@ class Corpus(object):
     def __init__(self, corpus_folder):
         self.corpus_dir = corpus_folder
         self.filenames = self.all_files()
-        # read in metadata file
+        # read in metadata file. Allows creation of specific functions that categorize and plot poems based on different metadata values
         self.metadata = pd.read_csv('bs-metadata.csv')
         
         self.poems = []
@@ -35,6 +35,7 @@ class Corpus(object):
         self.poem_lengths_in_lines = [(poem.name,len(poem.flat_lines)) for poem in self.poems]
         # TODO: order the poems in some way
         self.poem_lengths_in_tokens = [len(poem.raw_tokens) for poem in self.poems]
+        # list of all tokens
         self.all_tokens = [poem.raw_tokens for poem in self.poems]
         self.stemmed_tokens = [poem.stemmed_tokens for poem in self.poems]
         self.all_tokens = [item for sublist in self.all_tokens for item in sublist]
@@ -50,13 +51,17 @@ class Corpus(object):
         """give a word to query across the whole set of poems and return a list of all those word counts"""
         return [poem.fq[query] for poem in self.poems]
 
+    # divide corpus into 2 subsets based on poem lengths
     def divide_corpus_by_length(self,length_limit):
+        # 1.create dictionary with only keys and no values
         self.raw_corpus_subset = {'greater_than_' + str(length_limit) + '_lines': [], 'less_than_' + str(length_limit) + '_lines': []}
+       # 2.add values to each key based on poem lengths
         for poem in self.poems:
             if poem.num_total_lines >= length_limit:
                 self.raw_corpus_subset['greater_than_' + str(length_limit) + '_lines'].append(poem)
             else:
                 self.raw_corpus_subset['less_than_' + str(length_limit) + '_lines'].append(poem)
+        # 3.create subsets based on dictionary keys
         self.corpus_subset = {}
         for key in self.raw_corpus_subset.keys():
             self.corpus_subset[key] = Subset(self.raw_corpus_subset[key])
@@ -173,6 +178,7 @@ class Corpus(object):
             ax.set_title('Counts of token ' + self.reshape_on_the_fly(token_query))
             # ax.legend(title='Counts of token' + token_query)
 
+            plt.rcParams['font.family'] = 'Arial'
             plt.show()
         else:
             fig, ax = plt.subplots()
@@ -192,6 +198,7 @@ class Corpus(object):
             ax.set_xlabel("Poem name")
             ax.set_title('Counts of token ' + self.reshape_on_the_fly(token_query))
             # ax.legend(title='Counts of token' + token_query)
+            plt.rcParams['font.family'] = 'Arial'
             plt.show()
 
     def reshape_on_the_fly(self, text):
@@ -211,6 +218,7 @@ class Corpus(object):
                 axs[index].bar(most_common_tokens, most_common_counts)
                 axs[index].set_title(list(self.corpus_subset.keys())[index])
             fig.tight_layout()
+
             plt.show()
         else:
             fig, ax = plt.subplots()
@@ -327,7 +335,6 @@ if __name__ == "__main__":
 # turn on terminal
 # cd to right folder
 # pipenv shell
-# cd to the right folder (amna)
 # python3
 # >>> import importlib
 # >>> importlib.reload(analysis)
@@ -336,33 +343,16 @@ if __name__ == "__main__":
 # as in 
 # >>> our_corpus.write_output(our_corpus.fq.hapaxes())
 # >>> our_corpus.write_output(our_corpus.poems[0])
+
 # >>> our_corpus.corpus_concordance('دھاڑے')
 
 # when using a subset corpus
 # our_corpus.divide_corpus_by_length(15)
-# our_courpus.divide_corpus_by_metadata_query('narrative_voice)
+# our_corpus.corpus_subset['greater_than_15_lines'].narrative_voices
+# our_corpus.corpus_subset['less_than_15_lines'].narrative_voices
 
-# graph top ten most common words.
-# our_corpus.most_common_graph()
-
-# if you want to subdivide the corpus, do so and then graph it. it will recognize that there are subdivisions and make multiple graphs.
-# our_courpus.divide_corpus_by_metadata_query('narrative_voice)
-# our_corpus.most_common_graph()
-
-# give a token and graph it in the corpus. 
-# our_corpus.basic_graph('POETRY_WORD_HERE')
-
-# give a token and graph it in the corpus. 
-# if you want to subdivide the corpus, do so and then graph it. it will recognize that there are subdivisions and make multiple graphs.
-# our_corpus.divide_corpus_by_length(13)
-# our_corpus.basic_graph('POETRY_WORD_HERE')
-
-# try a concordance
-# our_corpus.concordance('query_word')
-
-
+# our_corpus.divide_corpus_by_metadata_query('narrative_voice')
 # our_corpus.corpus_subset['u'].poems
 
-# other examples
 # [poem.fq['میں'] for poem in our_corpus.corpus_subset['u'].poems]
 # our_corpus.count_word_by_subset('میں')
